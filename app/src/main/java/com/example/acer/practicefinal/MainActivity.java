@@ -2,13 +2,18 @@ package com.example.acer.practicefinal;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridView;
 
 public class MainActivity extends Activity {
+
+    private static final String TAG = "MainActivity";
+    private static final int REQUEST_ADD_ROOM = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +37,21 @@ public class MainActivity extends Activity {
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.content_add) {
+            // launch the add room activity
+            Intent intent = new Intent(this, AddRoomActivity.class);
+            startActivityForResult(intent, REQUEST_ADD_ROOM);
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onActivityResult (int requestCode, int resultCode, Intent data){
+        switch (requestCode){
+            case REQUEST_ADD_ROOM:
+                break;
+            default:
+                Log.wtf(TAG, "undefined request returned");
+        }
     }
+}
