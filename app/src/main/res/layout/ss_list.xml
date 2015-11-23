@@ -3,7 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    //CB toggle button to toggle the switches off and on
+    <!--CB toggle button to toggle the switches off and on-->
     <ToggleButton
         android:id="@+id/switch_toggle"
         android:layout_width="fill_parent"
@@ -11,6 +11,14 @@
         android:layout_gravity="center_vertical"
         android:textOn="@string/switch_on"
         android:textOff="@string/switch_off"/>
+
+    <!--CB this will be the list of all devices-->
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:drawSelectorOnTop="false"
+        />
 
 
 
