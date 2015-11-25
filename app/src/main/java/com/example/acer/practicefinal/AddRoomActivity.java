@@ -4,13 +4,27 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
+/**
+ * Add room activity is the activity where
+ * the user enters all the information regarding the room
+ * including
+ * name of the room (string)
+ * picture of the room (optional)
+ * [multiple] controller number (string)
+ * [multiple] device name (string)
+ * [multiple] port (string)
+ * [multiple] type(switch or sensor) (boolean)
+ */
 public class AddRoomActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_room);
+
+
     }
 
     @Override
@@ -34,4 +48,6 @@ public class AddRoomActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }
