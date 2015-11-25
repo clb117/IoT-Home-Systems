@@ -6,15 +6,11 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.example.acer.practicefinal.AddRoomActivity">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/add_room_room_name_instruction"
-        />
-
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="text"
+        android:hint="@string/add_room_name_hint"
         android:id="@+id/editText" />
 
     <Button
@@ -23,15 +19,22 @@
         android:text="@string/add_room_take_photo"
         android:id="@+id/button"
         android:layout_below="@+id/editText"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="22dp" />
+        />
 
-    <Button
+    <ViewAnimator
+        android:id="@+id/fragment_room_sensor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/add_room_add_more_room"
         android:layout_below="@+id/button"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="58dp" />
+        >
+    </ViewAnimator>
+
+    <Button
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:text="@string/add_room_add_more_room"
+        android:layout_below="@+id/fragment_room_sensor"
+        android:layout_centerHorizontal="true"
+        />
 
 </RelativeLayout>

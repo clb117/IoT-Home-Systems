@@ -8,6 +8,6 @@
 
     <string name="title_activity_add_room">AddRoomActivity</string>
     <string name="add_room_take_photo">Take Photo of the room</string>
-    <string name="add_room_room_name_instruction">Room Name</string>
+    <string name="add_room_name_hint">Room Name</string>
     <string name="add_room_add_more_room">+</string>
 </resources>
