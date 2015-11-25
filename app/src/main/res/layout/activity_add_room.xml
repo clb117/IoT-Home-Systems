@@ -7,29 +7,30 @@
     tools:context="com.example.acer.practicefinal.AddRoomActivity">
 
     <EditText
+        android:id="@+id/roomNameEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="text"
         android:hint="@string/add_room_name_hint"
-        android:id="@+id/editText" />
+        />
 
     <Button
+        android:id="@+id/takePhotoOfRoomButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/add_room_take_photo"
-        android:id="@+id/button"
-        android:layout_below="@+id/editText"
+        android:layout_below="@+id/roomNameEditText"
         />
 
     <ViewAnimator
         android:id="@+id/fragment_room_sensor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button"
+        android:layout_below="@+id/takePhotoOfRoomButton"
         >
     </ViewAnimator>
 
     <Button
+        android:id="@+id/addMoreSensorButton"
         android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:text="@string/add_room_add_more_room"
