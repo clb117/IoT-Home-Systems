@@ -2,6 +2,8 @@ package com.example.acer.practicefinal;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,14 +19,19 @@ import android.view.View;
  * [multiple] port (string)
  * [multiple] type(switch or sensor) (boolean)
  */
-public class AddRoomActivity extends Activity {
+public class AddRoomActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_room);
 
-
+        if (savedInstanceState == null){
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            AddSensorFragment fragment = new AddSensorFragment();
+            transaction.replace(R.id.fragment_room_sensor, fragment);
+            transaction.commit();
+        }
     }
 
     @Override
