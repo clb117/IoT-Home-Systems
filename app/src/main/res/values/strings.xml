@@ -6,6 +6,14 @@
     <string name="switch_on">On</string>
     <string name="switch_off">Off</string>
 
+    <string name="room_name">Room Name</string>
+    <string name="room_image">Picture of Room</string>
+
+    <string name="switch_name">Name of Switch</string>
+
+    <string name="sensor_reading">Button to Refresh Sensor Reading</string>
+    <string name="sensor_value">Current Sensor Value</string>
+
     <string name="title_activity_add_room">AddRoomActivity</string>
     <string name="add_room_take_photo">Take Photo of the room</string>
     <string name="add_room_name_hint">Room Name</string>

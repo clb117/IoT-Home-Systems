@@ -1,12 +1,16 @@
 package com.example.acer.practicefinal;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 /**
  * CB A class to generate the images on the GridView
@@ -30,7 +34,7 @@ public class ImageAdapter extends BaseAdapter {
     }
 
     public int getCount() {
-        return mThumbIds.length;
+        return 0;
     }
 
     //TODO Implement this
@@ -47,19 +51,19 @@ public class ImageAdapter extends BaseAdapter {
 
     // create a new ImageView for each item referenced by the Adapter
     public View getView(int position, View convertView, ViewGroup parent) {
-        ImageView imageView;
+        View view;
+        LayoutInflater li = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (convertView == null) {
-            // if it's not recycled, initialize some attributes
-            imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setPadding(8, 8, 8, 8);
+           view = new View(mContext);
+            view = li.inflate(android.R.layout.room_grid_item, null);
+            TextView textView = (TextView)view.findViewById(android.R.id.room_name);
+            ImageView imageView = (ImageView)view.findViewById(android.R.drawable.room_image);
+            textView.setText("Room Name"); //CB This will change according to room name saved in CSV
+            imageView.setImageDrawable(android.R.drawable.ic_room_image);
         } else {
-            imageView = (ImageView) convertView;
+            view = (View) convertView;
         }
 
-        imageView.setImageResource(mThumbIds[position]);
-        // insert on click listener here imageView.setOnClickListener();
-        return imageView;
+        return view;
     }
 }
