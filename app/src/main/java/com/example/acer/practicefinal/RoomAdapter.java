@@ -43,8 +43,9 @@ public class RoomAdapter extends BaseAdapter {
 
     /**
      * Goes through the directory and loads all the CSV in there to the arraylist
+     * Doesn't actually open the csv. That should happen when the user touches the corresponding grid
      */
-    private void openAllCSV(){
+    private void listAllCSV(){
         File folder = new File (Environment.getExternalStorageDirectory().toString() + mContext.getString(R.string.directory));
         if(folder.mkdir()){
             //mkdir returns true if there was no folder before and it was created
