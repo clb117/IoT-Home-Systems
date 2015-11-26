@@ -101,6 +101,9 @@ public class AddRoomActivity extends FragmentActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * dispatches the intent to take picture of the room
+     */
     private void dispatchTakePictureIntent(){
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null){
@@ -116,9 +119,12 @@ public class AddRoomActivity extends FragmentActivity {
         }
     }
 
+    /**
+     * Finalizes and saves the user's input fields to SD
+     */
     private void commit(){
         String roomName = mRoomNameEditText.getText().toString();
-        File roomDir = new File (Environment.getExternalStorageDirectory().toString() + "/DCIM/IoTHomeSystems");
+        File roomDir = new File (Environment.getExternalStorageDirectory().toString() + getString(R.string.directory));
         File csvFile = new File(roomDir, roomName+".csv");
         File pictureFile = new File(roomDir, roomName+".png");
         if (csvFile.exists()){
@@ -139,5 +145,4 @@ public class AddRoomActivity extends FragmentActivity {
             Log.wtf(TAG, "could not save the picture", e);
         }
     }
-
 }

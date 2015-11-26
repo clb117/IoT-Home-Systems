@@ -21,6 +21,8 @@
     <string name="add_room_add_more_room">+</string>
     <string name="add_room_commit">Commit</string>
 
+    <string name="directory">/DCIM/IoTHomeSystems</string>
+
     <!-- Add sensor fragment related views-->
     <string name="add_sensor_controller_number_hint">Controller Number</string>
     <string name="add_sensor_device_name_hint">Device Name</string>
