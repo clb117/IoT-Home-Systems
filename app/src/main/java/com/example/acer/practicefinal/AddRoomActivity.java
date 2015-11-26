@@ -1,14 +1,23 @@
 package com.example.acer.practicefinal;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileOutputStream;
 
 /**
  * Add room activity is the activity where
@@ -23,10 +32,14 @@ import android.widget.EditText;
  */
 public class AddRoomActivity extends FragmentActivity {
 
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final String TAG = "AddRoomActivity";
     private EditText mRoomNameEditText;
     private Button mTakePhotoOfRoomButton;
     private Button mAddMoreSensorButton;
     private Button mCommitAddRoomButton;
+
+    private Bitmap roomImageBitmap = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +55,7 @@ public class AddRoomActivity extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 //TODO take photo intent
+                dispatchTakePictureIntent();
             }
         });
 
@@ -56,6 +70,7 @@ public class AddRoomActivity extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 //TODO go through and save all the room info and sensor info to csv
+                commit();
             }
         });
 
@@ -87,4 +102,44 @@ public class AddRoomActivity extends FragmentActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private void dispatchTakePictureIntent(){
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null){
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult (int requestCode, int resultCode, Intent data){
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
+            Bundle extras = data.getExtras();
+            roomImageBitmap = (Bitmap) extras.get("data");
+        }
+    }
+
+    private void commit(){
+        String roomName = mRoomNameEditText.getText().toString();
+        File roomDir = new File (Environment.getExternalStorageDirectory().toString() + "/DCIM/IoTHomeSystems");
+        File csvFile = new File(roomDir, roomName+".csv");
+        File pictureFile = new File(roomDir, roomName+".png");
+        if (csvFile.exists()){
+            Toast.makeText(AddRoomActivity.this, "You already have this room added", Toast.LENGTH_LONG).show();
+            return;
+        }
+        //TODO write to csv
+
+
+        //save the bitmap
+        try{
+            FileOutputStream fileOutputStream = new FileOutputStream(pictureFile);
+            roomImageBitmap.compress(Bitmap.CompressFormat.PNG, 90, fileOutputStream);
+            fileOutputStream.flush();
+            fileOutputStream.close();
+        }
+        catch (Exception e){
+            Log.wtf(TAG, "could not save the picture", e);
+        }
+    }
+
 }
