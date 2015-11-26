@@ -7,6 +7,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 /**
  * Add room activity is the activity where
@@ -21,10 +23,41 @@ import android.view.View;
  */
 public class AddRoomActivity extends FragmentActivity {
 
+    private EditText mRoomNameEditText;
+    private Button mTakePhotoOfRoomButton;
+    private Button mAddMoreSensorButton;
+    private Button mCommitAddRoomButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_room);
+
+        mRoomNameEditText = (EditText)findViewById(R.id.roomNameEditText);
+        mTakePhotoOfRoomButton = (Button)findViewById(R.id.takePhotoOfRoomButton);
+        mAddMoreSensorButton = (Button)findViewById(R.id.addMoreSensorButton);
+        mCommitAddRoomButton = (Button)findViewById(R.id.commitAddRoomButton);
+
+        mTakePhotoOfRoomButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO take photo intent
+            }
+        });
+
+        mAddMoreSensorButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO add another add sensor fragment
+            }
+        });
+
+        mCommitAddRoomButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO go through and save all the room info and sensor info to csv
+            }
+        });
 
         if (savedInstanceState == null){
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -52,9 +85,6 @@ public class AddRoomActivity extends FragmentActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
-
-
 }
