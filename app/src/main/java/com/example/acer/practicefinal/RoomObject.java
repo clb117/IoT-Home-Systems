@@ -26,14 +26,26 @@ public class RoomObject {
         roomBitmap = getRoomBitmapFromFile(pngPath);
     }
 
+    public String getRoomName(){
+        return roomName;
+    }
+    
     public boolean hasImage(){
         return roomBitmap!=null;
     }
 
-    public Bitmap getRoomBitmapFromFile (File pngPath){
+    public Bitmap getImage(){
+        return roomBitmap;
+    }
+
+    /**
+     * loads the png image from the file
+     * @param pngPath
+     * @return
+     */
+    private Bitmap getRoomBitmapFromFile (File pngPath){
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
         return BitmapFactory.decodeFile(pngPath.toString(), options);
-
     }
 }
