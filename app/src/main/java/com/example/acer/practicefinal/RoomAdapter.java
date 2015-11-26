@@ -1,14 +1,18 @@
 package com.example.acer.practicefinal;
 
 import android.content.Context;
+import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.util.ArrayList;
 
 public class RoomAdapter extends BaseAdapter {
+    private static final String TAG = "RoomAdapter";
     private Context mContext;
     private ArrayList<File> list;
 
@@ -41,6 +45,23 @@ public class RoomAdapter extends BaseAdapter {
      * Goes through the directory and loads all the CSV in there to the arraylist
      */
     private void openAllCSV(){
-        
+        File folder = new File (Environment.getExternalStorageDirectory().toString() + mContext.getString(R.string.directory));
+        if(folder.mkdir()){
+            //mkdir returns true if there was no folder before and it was created
+            //nothing in folder, can return early
+            Log.d(TAG, "directory created, it didn't exist before");
+            return;
+        }
+        // only care about csv files
+        File[] listOfFiles = folder.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String filename) {
+                return filename.toLowerCase().endsWith(".csv");
+            }
+        });
+        for (File file : listOfFiles){
+            list.add(file);
+        }
+
     }
 }

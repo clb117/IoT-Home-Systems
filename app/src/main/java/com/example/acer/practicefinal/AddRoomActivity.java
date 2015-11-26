@@ -125,6 +125,7 @@ public class AddRoomActivity extends FragmentActivity {
     private void commit(){
         String roomName = mRoomNameEditText.getText().toString();
         File roomDir = new File (Environment.getExternalStorageDirectory().toString() + getString(R.string.directory));
+        roomDir.mkdir();
         File csvFile = new File(roomDir, roomName+".csv");
         File pictureFile = new File(roomDir, roomName+".png");
         if (csvFile.exists()){
