@@ -20,8 +20,8 @@ public class MainActivityFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(android.R.layout.fragment_main);
-        ImageAdapter adapter = new ImageAdapter(MainActivityFragment.this);
+        //setContentView(R.layout.fragment_main);
+        ImageAdapter adapter = new ImageAdapter(MainActivityFragment.this.getContext());
         gridview.setAdapter(adapter);
     /*    gridview.setOnItemClickListener(new AdapterView.OnItemClickListener(
                 @Override
