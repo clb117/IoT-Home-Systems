@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 
@@ -20,11 +21,12 @@ public class AddSensorFragment extends Fragment {
     private EditText mPortEditText;
     private Switch mSwitchOrSensorSwitch;
 
+    private boolean switchValue;
+
     @Override
     public void onCreate (Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-
-
+        switchValue = false;
     }
 
     @Override
@@ -33,11 +35,29 @@ public class AddSensorFragment extends Fragment {
         mDeviceNameEditText = (EditText)view.findViewById(R.id.sensorDeviceNameEditText);
         mPortEditText = (EditText)view.findViewById(R.id.sensorPortEditText);
         mSwitchOrSensorSwitch = (Switch)view.findViewById(R.id.sensorSwitchOrSensorSwitch);
-        saveToCSV();
+
+        mSwitchOrSensorSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                switchValue = isChecked;
+            }
+        });
     }
 
-    // TODO implement saving these entered forms into csv
-    private void saveToCSV(){
-        
+    public String getControllerNumber(){
+        return mControllerNumberEditText.getText().toString();
     }
+
+    public String getDeviceName(){
+        return mDeviceNameEditText.getText().toString();
+    }
+
+    public String getPort(){
+        return mPortEditText.getText().toString();
+    }
+
+    public boolean getSensorType(){
+        return switchValue;
+    }
+
 }
