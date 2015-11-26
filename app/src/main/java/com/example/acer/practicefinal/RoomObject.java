@@ -26,10 +26,14 @@ public class RoomObject {
         roomBitmap = getRoomBitmapFromFile(pngPath);
     }
 
+    public void addImage(File pngPath){
+        roomBitmap = getRoomBitmapFromFile(pngPath);
+    }
+
     public String getRoomName(){
         return roomName;
     }
-    
+
     public boolean hasImage(){
         return roomBitmap!=null;
     }
