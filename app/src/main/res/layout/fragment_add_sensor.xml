@@ -32,6 +32,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/add_sensor_switch_or_sensor_hint"
+        android:textOn="@string/add_sensor_switch_selected"
+        android:textOff="@string/add_sensor_sensor_selected"
         android:layout_below="@+id/sensorPortEditText"
         />
 </RelativeLayout>
