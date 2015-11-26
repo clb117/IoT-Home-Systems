@@ -23,30 +23,29 @@ public class Devices extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if ("switch") {
-            adapter = new ArrayAdapter<String>(getAppllicationContext(), R.layout.switch_view, R.id.switch_name);
+        if (true) {//switch
+            adapter = new ArrayAdapter<String>(this, R.layout.switch_view, R.id.switch_name);
         }
-        else
+        else {//sensor
             adapter = new ArrayAdapter<String>(getApplicationContext(),
-                android.R.layout.sensor_view,android.R.id.sensor_name);
-                devices);
-        setListAdapter(adapter);
-        getMenuInflator().inflate(R.menu.ss_list);
-    }
-
-    @Override
-    protected void onListItemClicked(ListView lv, View v, int position, long id) {
-        String item = (String)getListAdapter().getItem(position);
-        if (item.equals("switch")) {
-            //turn switch on or off
+                    R.layout.sensor_view, R.id.sensor_value);
+            setListAdapter(adapter);
+            //getMenuInflator().inflate(R.menu.ss_list);
         }
-        else
-            if ((item.equals("sensor")) [
-        //update sensor value
-        ]
     }
 
-
+//    @Override
+//    protected void onListItemClicked(ListView lv, View v, int position, long id) {
+//        String item = (String)getListAdapter().getItem(position);
+//        if (item.equals("switch")) {
+//            //turn switch on or off
+//        }
+//        else{
+//            if ((item.equals("sensor"))) {
+//                //update sensor value
+//            }
+//        }
+//    }
 }
 
 

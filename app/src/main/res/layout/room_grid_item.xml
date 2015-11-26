@@ -1,9 +1,9 @@
-<!--This is what one individual item of the grid will have-->
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
     android:orientation="vertical" android:layout_width="wrap_content"
     android:layout_height="wrap_content">
-
+    <!--This is what one individual item of the grid will have-->
         <ImageView
             android:id="@+id/room_image"
             android:layout_width="50dp"

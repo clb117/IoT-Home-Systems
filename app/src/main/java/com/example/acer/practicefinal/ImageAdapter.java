@@ -55,11 +55,12 @@ public class ImageAdapter extends BaseAdapter {
         LayoutInflater li = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (convertView == null) {
            view = new View(mContext);
-            view = li.inflate(android.R.layout.room_grid_item, null);
-            TextView textView = (TextView)view.findViewById(android.R.id.room_name);
-            ImageView imageView = (ImageView)view.findViewById(android.R.drawable.room_image);
+
+            view = li.inflate(R.layout.room_grid_item, null);
+            TextView textView = (TextView)view.findViewById(R.id.room_name);
+            //ImageView imageView = (ImageView)view.findViewById(R.drawable.room_image);
             textView.setText("Room Name"); //CB This will change according to room name saved in CSV
-            imageView.setImageDrawable(android.R.drawable.ic_room_image);
+            //imageView.setImageDrawable(R.drawable.ic_room_image);
         } else {
             view = (View) convertView;
         }
