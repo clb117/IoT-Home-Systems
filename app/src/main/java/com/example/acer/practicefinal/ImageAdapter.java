@@ -14,20 +14,34 @@ import android.widget.ListAdapter;
 public class ImageAdapter extends BaseAdapter {
 
     private Context mContext;
+    // references to our images
+    //CB this will contain the images read from the CSV file which is saved in the create form
+    private Integer[] mThumbIds = {
+            R.drawable.ic_add_room,R.drawable.ic_add_room,R.drawable.ic_add_room,R.drawable.ic_add_room,R.drawable.ic_add_room,R.drawable.ic_add_room,R.drawable.ic_add_room,R.drawable.ic_add_room,R.drawable.ic_add_room
+    };
 
     public ImageAdapter (Context c) {
         mContext = c;
+    }
+
+    public ImageAdapter (Context c, Integer[] thumbIds){
+        mContext = c;
+        mThumbIds = thumbIds;
     }
 
     public int getCount() {
         return mThumbIds.length;
     }
 
+    //TODO Implement this
     public Object getItem(int position) {
+
         return null;
     }
 
+    //TODO Implement this
     public long getItemId(int position) {
+
         return 0;
     }
 
@@ -48,10 +62,4 @@ public class ImageAdapter extends BaseAdapter {
         // insert on click listener here imageView.setOnClickListener();
         return imageView;
     }
-
-
-    // references to our images
-    private Integer[] mThumbIds = {
-           //CB this will contain the images read from the CSV file which is saved in the create form
-    };
 }
