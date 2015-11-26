@@ -1,5 +1,8 @@
 package com.example.acer.practicefinal;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import java.io.File;
 
 /**
@@ -8,12 +11,11 @@ import java.io.File;
  */
 public class RoomObject {
 
-    private File pngPath;
     private String roomName;
+    private Bitmap roomBitmap;
 
     public RoomObject(File csvPath){
-        this.pngPath = null;
-
+        roomBitmap = null;
         String name = csvPath.getName();
         // room name is the file name without the extension
         roomName = name.substring(0, name.length()-".csv".length());
@@ -21,12 +23,17 @@ public class RoomObject {
 
     public RoomObject (File csvPath, File pngPath){
         this(csvPath);
-        this.pngPath = pngPath;
+        roomBitmap = getRoomBitmapFromFile(pngPath);
     }
 
     public boolean hasImage(){
-        return pngPath!=null;
+        return roomBitmap!=null;
     }
 
-    
+    public Bitmap getRoomBitmapFromFile (File pngPath){
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+        return BitmapFactory.decodeFile(pngPath.toString(), options);
+
+    }
 }
