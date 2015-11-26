@@ -54,7 +54,6 @@ public class AddRoomActivity extends FragmentActivity {
         mTakePhotoOfRoomButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO take photo intent
                 dispatchTakePictureIntent();
             }
         });
@@ -69,7 +68,6 @@ public class AddRoomActivity extends FragmentActivity {
         mCommitAddRoomButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO go through and save all the room info and sensor info to csv
                 commit();
             }
         });
