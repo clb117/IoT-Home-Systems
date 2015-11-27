@@ -49,14 +49,15 @@ public class RoomAdapter extends BaseAdapter {
      */
     private Collection<RoomObject> listAllCSV(){
         File folder = new File (Environment.getExternalStorageDirectory().toString() + mContext.getString(R.string.directory));
+        final HashMap<String, RoomObject> roomMap = new HashMap<String, RoomObject>();
         if(folder.mkdir()){
             //mkdir returns true if there was no folder before and it was created
             //nothing in folder, can return early
             Log.d(TAG, "directory created, it didn't exist before");
-            return;
+            return roomMap.values();
         }
         // only care about csv files
-        final HashMap<String, RoomObject> roomMap = new HashMap<String, RoomObject>();
+
         File[] listOfFiles = folder.listFiles(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String filename) {
@@ -65,12 +66,6 @@ public class RoomAdapter extends BaseAdapter {
                     roomMap.put(room.getRoomName(), room);
                     return true;
                 }
-                return false;
-            }
-        });
-        File[] listOfImages = folder.listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String filename) {
                 if (filename.toLowerCase().endsWith(".png")){
                     String roomName;
                     String name = new File(filename).getName();
