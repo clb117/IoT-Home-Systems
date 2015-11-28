@@ -1,9 +1,7 @@
 package com.example.acer.practicefinal;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -56,15 +54,12 @@ public class RoomAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         RoomObject room = roomObjects[position];
-        //LayoutInflater li = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        //View view;
         if (convertView == null){
             // room has image, make the view an imageview
             if (room.hasImage()){
                 Log.d(TAG, String.format("view at position %d has an image", position));
                 ImageView imageView = new ImageView(mContext);
                 imageView.setImageBitmap(room.getImage());
-                //imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 imageView.setPadding(8, 8, 8, 8);
                 imageView.setLayoutParams(new GridView.LayoutParams(256, 256));
@@ -75,7 +70,6 @@ public class RoomAdapter extends BaseAdapter {
                 Log.d(TAG, String.format("view at position %d has a text", position));
                 TextView textView = new TextView(mContext);
                 textView.setText(room.getRoomName());
-
                 textView.setPadding(8, 8, 8, 8);
                 textView.setGravity(Gravity.CENTER_HORIZONTAL);
                 textView.setLayoutParams(new GridView.LayoutParams(256, 256));
@@ -101,9 +95,8 @@ public class RoomAdapter extends BaseAdapter {
             Log.d(TAG, "directory created, it didn't exist before");
             return roomMap.values();
         }
-        // only care about csv files
-
-        File[] listOfFiles = folder.listFiles(new FilenameFilter() {
+        // only care about csv and png files
+        folder.listFiles(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String filename) {
                 if (filename.toLowerCase().endsWith(".csv")){
