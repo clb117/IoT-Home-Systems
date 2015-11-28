@@ -12,10 +12,12 @@ import java.io.File;
 public class RoomObject {
 
     private String roomName;
+    private String roomPngPath;
     private Bitmap roomBitmap;
 
     public RoomObject(File csvPath){
         roomBitmap = null;
+        roomPngPath = null;
         String name = csvPath.getName();
         // room name is the file name without the extension
         roomName = name.substring(0, name.length()-".csv".length());
@@ -28,6 +30,18 @@ public class RoomObject {
 
     public void addImage(File pngPath){
         roomBitmap = getRoomBitmapFromFile(pngPath);
+    }
+
+    public void setRoomPngPath (String pngPath){
+        roomPngPath = pngPath;
+    }
+
+    public boolean hasRoomPngPath(){
+        return roomPngPath != null;
+    }
+
+    public String getRoomPngPath(){
+        return roomPngPath;
     }
 
     public String getRoomName(){

@@ -1,7 +1,9 @@
 package com.example.acer.practicefinal;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,11 +56,12 @@ public class RoomAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         RoomObject room = roomObjects[position];
-        LayoutInflater li = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view;
+        //LayoutInflater li = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        //View view;
         if (convertView == null){
             // room has image, make the view an imageview
             if (room.hasImage()){
+                Log.d(TAG, String.format("view at position %d has an image", position));
                 ImageView imageView = new ImageView(mContext);
                 imageView.setImageBitmap(room.getImage());
                 imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
@@ -66,11 +69,23 @@ public class RoomAdapter extends BaseAdapter {
                 imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
                 return imageView;
             }
+            else if (room.hasRoomPngPath()){
+                Log.d(TAG, String.format("view at position %d has a png path", position));
+                ImageView imageView = new ImageView(mContext);
+                imageView.setImageURI(Uri.withAppendedPath(
+                        MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI, "" + room.getRoomPngPath()
+                ));
+                imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                imageView.setPadding(8, 8, 8, 8);
+                imageView.setLayoutParams(new GridView.LayoutParams(100,100));
+                return imageView;
+            }
             else{ //room does not have an image, make the view a textview
                 //TODO not sure if implemented correctly, test later.
+                Log.d(TAG, String.format("view at position %d has a text", position));
                 TextView textView = new TextView(mContext);
                 textView.setText(room.getRoomName());
-                textView.setLayoutParams(new GridView.LayoutParams(85, 85));
+                textView.setLayoutParams(new GridView.LayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)));
                 return textView;
             }
         }
@@ -84,7 +99,7 @@ public class RoomAdapter extends BaseAdapter {
      * Doesn't actually open the csv. That should happen when the user touches the corresponding grid
      */
     private Collection<RoomObject> listAllCSV(){
-        File folder = new File (Environment.getExternalStorageDirectory().toString() + mContext.getString(R.string.directory));
+        final File folder = new File (Environment.getExternalStorageDirectory().toString() + mContext.getString(R.string.directory));
         final HashMap<String, RoomObject> roomMap = new HashMap<String, RoomObject>();
         if(folder.mkdir()){
             //mkdir returns true if there was no folder before and it was created
@@ -98,16 +113,19 @@ public class RoomAdapter extends BaseAdapter {
             @Override
             public boolean accept(File dir, String filename) {
                 if (filename.toLowerCase().endsWith(".csv")){
+                    Log.d(TAG, String.format("File name of the csv is %s", filename));
                     RoomObject room = new RoomObject(new File(filename));
                     roomMap.put(room.getRoomName(), room);
                     return true;
                 }
                 if (filename.toLowerCase().endsWith(".png")){
+                    Log.d(TAG, String.format("File name of the png is %s", filename));
                     String roomName;
                     String name = new File(filename).getName();
                     // room name is the file name without the extension
                     roomName = name.substring(0, name.length()-".png".length());
                     roomMap.get(roomName).addImage(new File(filename));
+                    //roomMap.get(roomName).setRoomPngPath(filename);
                     return true;
                 }
                 return false;
