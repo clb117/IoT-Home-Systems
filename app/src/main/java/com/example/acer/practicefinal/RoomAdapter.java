@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -66,7 +67,7 @@ public class RoomAdapter extends BaseAdapter {
                 //imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 imageView.setPadding(8, 8, 8, 8);
-                imageView.setLayoutParams(new GridView.LayoutParams(255, 255));
+                imageView.setLayoutParams(new GridView.LayoutParams(256, 256));
                 return imageView;
             }
             else{ //room does not have an image, make the view a textview
@@ -74,8 +75,11 @@ public class RoomAdapter extends BaseAdapter {
                 Log.d(TAG, String.format("view at position %d has a text", position));
                 TextView textView = new TextView(mContext);
                 textView.setText(room.getRoomName());
-                //textView.setLayoutParams(new GridView.LayoutParams(255, 255));
-                textView.setLayoutParams(new GridView.LayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)));
+
+                textView.setPadding(8, 8, 8, 8);
+                textView.setGravity(Gravity.CENTER_HORIZONTAL);
+                textView.setLayoutParams(new GridView.LayoutParams(256, 256));
+                //textView.setLayoutParams(new GridView.LayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)));
                 return textView;
             }
         }
