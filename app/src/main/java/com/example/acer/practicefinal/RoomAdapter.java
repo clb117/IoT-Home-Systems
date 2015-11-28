@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
@@ -52,7 +53,30 @@ public class RoomAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        return null;
+        RoomObject room = roomObjects[position];
+        LayoutInflater li = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view;
+        if (convertView == null){
+            // room has image, make the view an imageview
+            if (room.hasImage()){
+                ImageView imageView = new ImageView(mContext);
+                imageView.setImageBitmap(room.getImage());
+                imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                imageView.setPadding(8, 8, 8, 8);
+                imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
+                return imageView;
+            }
+            else{ //room does not have an image, make the view a textview
+                //TODO not sure if implemented correctly, test later.
+                TextView textView = new TextView(mContext);
+                textView.setText(room.getRoomName());
+                textView.setLayoutParams(new GridView.LayoutParams(85, 85));
+                return textView;
+            }
+        }
+        else{
+            return (View)convertView;
+        }
     }
 
     /**
