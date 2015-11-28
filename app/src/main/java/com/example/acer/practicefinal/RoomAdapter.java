@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -15,7 +14,6 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -45,6 +43,7 @@ public class RoomAdapter extends BaseAdapter {
 
     /**
      * returns the row id of the item
+     * there can be itemsPerRow - 1 amount of items per row for android reasons
      * @param position
      * @return
      */
@@ -64,20 +63,10 @@ public class RoomAdapter extends BaseAdapter {
                 Log.d(TAG, String.format("view at position %d has an image", position));
                 ImageView imageView = new ImageView(mContext);
                 imageView.setImageBitmap(room.getImage());
-                imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                //imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 imageView.setPadding(8, 8, 8, 8);
-                imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
-                return imageView;
-            }
-            else if (room.hasRoomPngPath()){
-                Log.d(TAG, String.format("view at position %d has a png path", position));
-                ImageView imageView = new ImageView(mContext);
-                imageView.setImageURI(Uri.withAppendedPath(
-                        MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI, "" + room.getRoomPngPath()
-                ));
-                imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                imageView.setPadding(8, 8, 8, 8);
-                imageView.setLayoutParams(new GridView.LayoutParams(100,100));
+                imageView.setLayoutParams(new GridView.LayoutParams(255, 255));
                 return imageView;
             }
             else{ //room does not have an image, make the view a textview
@@ -85,6 +74,7 @@ public class RoomAdapter extends BaseAdapter {
                 Log.d(TAG, String.format("view at position %d has a text", position));
                 TextView textView = new TextView(mContext);
                 textView.setText(room.getRoomName());
+                //textView.setLayoutParams(new GridView.LayoutParams(255, 255));
                 textView.setLayoutParams(new GridView.LayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)));
                 return textView;
             }
@@ -125,7 +115,7 @@ public class RoomAdapter extends BaseAdapter {
                     // room name is the file name without the extension
                     roomName = name.substring(0, name.length()-".png".length());
                     roomMap.get(roomName).addImage(new File(folder, filename));
-                    roomMap.get(roomName).setRoomPngPath(new File(folder,filename).toString());
+                    roomMap.get(roomName).setRoomPngPath(new File(folder, filename).toString());
                     return true;
                 }
                 return false;
