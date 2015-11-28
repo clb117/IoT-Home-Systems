@@ -119,7 +119,6 @@ public class RoomAdapter extends BaseAdapter {
                     // room name is the file name without the extension
                     roomName = name.substring(0, name.length()-".png".length());
                     roomMap.get(roomName).addImage(new File(folder, filename));
-                    roomMap.get(roomName).setRoomPngPath(new File(folder, filename).toString());
                     return true;
                 }
                 return false;
