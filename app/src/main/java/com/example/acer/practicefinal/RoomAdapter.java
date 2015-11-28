@@ -3,39 +3,51 @@ package com.example.acer.practicefinal;
 import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.TextView;
 
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 
 public class RoomAdapter extends BaseAdapter {
     private static final String TAG = "RoomAdapter";
+    private static final int itemsPerRow = 4;
     private Context mContext;
-    private ArrayList<RoomObject> list;
+    private RoomObject[] roomObjects;
 
     public RoomAdapter (Context context){
         mContext = context;
-        list = new ArrayList<RoomObject>();
+        Collection<RoomObject> list = listAllCSV();
+        roomObjects =  list.toArray(new RoomObject[list.size()]);
+        Arrays.sort(roomObjects, new RoomObjectNameComparator());
     }
 
     @Override
     public int getCount(){
-        return 0;
+        return roomObjects.length;
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return roomObjects[position];
     }
 
+    /**
+     * returns the row id of the item
+     * @param position
+     * @return
+     */
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position/itemsPerRow;
     }
 
     @Override
