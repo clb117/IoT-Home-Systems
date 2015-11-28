@@ -24,7 +24,7 @@ public class MainActivity extends Activity {
 
         // TODO go through the R.string.directory and add to the grid
         GridView gridView = (GridView) findViewById(R.id.grid_view);
-        gridView.setAdapter(new ImageAdapter(this));
+        gridView.setAdapter(new RoomAdapter(this));
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
