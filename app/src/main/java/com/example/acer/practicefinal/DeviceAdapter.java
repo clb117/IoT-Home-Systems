@@ -69,14 +69,14 @@ public class DeviceAdapter extends BaseAdapter{
         if (convertView == null){
             Log.d(TAG, String.format("Device type is [%s]", deviceInfo[1]));
             if (isASensor(deviceInfo)){
-                convertView = LayoutInflater.from(mContext).inflate(R.layout.item_device_sensor, parent);
+                convertView = LayoutInflater.from(mContext).inflate(R.layout.item_device_sensor, null);
                 TextView name = (TextView)convertView.findViewById(R.id.item_device_sensor_name);
                 TextView value = (TextView)convertView.findViewById(R.id.item_device_sensor_value);
                 name.setText(deviceInfo[0]);
                 value.setText(getSensorValueFromExternalDevice(deviceInfo));
             }
             else if (isASwitch(deviceInfo)){
-                convertView = LayoutInflater.from(mContext).inflate(R.layout.item_device_switch, parent);
+                convertView = LayoutInflater.from(mContext).inflate(R.layout.item_device_switch, null);
                 TextView name = (TextView)convertView.findViewById(R.id.item_device_switch_name);
                 Switch value = (Switch)convertView.findViewById(R.id.item_device_switch_value);
                 name.setText(deviceInfo[0]);
