@@ -31,7 +31,7 @@ public class DeviceAdapter extends BaseAdapter{
         this.mContext = context;
 
         //open the room csv file
-        List<String[]> rows = openCSV(room);
+        rows = openCSV(room);
     }
 
     @Override
