@@ -65,8 +65,8 @@ public class RoomAdapter extends BaseAdapter {
                 imageView.setLayoutParams(new GridView.LayoutParams(256, 256));
                 return imageView;
             }
-            else{ //room does not have an image, make the view a textview
-                //TODO not sure if implemented correctly, test later.
+            else{
+                //room does not have an image, make the view a textview
                 Log.d(TAG, String.format("view at position %d has a text", position));
                 TextView textView = new TextView(mContext);
                 textView.setText(room.getRoomName());
