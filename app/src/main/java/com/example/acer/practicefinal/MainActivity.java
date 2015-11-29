@@ -48,9 +48,9 @@ public class MainActivity extends Activity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.content_add) {
             // launch the add room activity
-            Intent intent = new Intent(this, AddRoomActivity.class);
-            startActivityForResult(intent, REQUEST_ADD_ROOM);
-            return true;
+//            Intent intent = new Intent(this, AddRoomActivity.class);
+//            startActivityForResult(intent, REQUEST_ADD_ROOM);
+//            return true;
         }
         return super.onOptionsItemSelected(item);
     }
