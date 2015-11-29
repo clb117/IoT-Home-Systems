@@ -27,7 +27,7 @@ public class DeviceAdapter extends BaseAdapter{
     private List<String[]> rows;
 
 
-    public DeviceAdapter(Context context, RoomObject room){
+    public DeviceAdapter(Context context, String room){
         this.mContext = context;
 
         //open the room csv file
@@ -100,18 +100,18 @@ public class DeviceAdapter extends BaseAdapter{
      * @param room
      * @return
      */
-    private List<String[]> openCSV(RoomObject room){
+    private List<String[]> openCSV(String room){
         final File folder = new File (Environment.getExternalStorageDirectory().toString() + mContext.getString(R.string.directory));
-        File csvFile = new File(folder,room.getRoomName()+".csv");
+        File csvFile = new File(folder,room+".csv");
         List<String[]> list = null;
         try {
             CSVReader csvReader = new CSVReader(new FileReader(csvFile));
             list = csvReader.readAll();
             csvReader.close();
         } catch (FileNotFoundException e) {
-            Log.wtf(TAG, String.format("csv file: %s.csv was not found", room.getRoomName()), e);
+            Log.wtf(TAG, String.format("csv file: %s.csv was not found", room), e);
         } catch (IOException e) {
-            Log.wtf(TAG, String.format("failed to read from the csv file: %s.csv", room.getRoomName(),e));
+            Log.wtf(TAG, String.format("failed to read from the csv file: %s.csv", room,e));
         }
         return list;
     }

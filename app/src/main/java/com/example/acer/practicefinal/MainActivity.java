@@ -14,7 +14,10 @@ import android.widget.Toast;
 public class MainActivity extends Activity {
 
     private static final String TAG = "MainActivity";
+
+    public static final String ROOM_NAME_KEY = "room_name";
     private static final int REQUEST_ADD_ROOM = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,11 +67,15 @@ public class MainActivity extends Activity {
 
     private void setupGridView() {
         GridView gridView = (GridView) findViewById(R.id.grid_view);
-        gridView.setAdapter(new RoomAdapter(this));
+        final RoomAdapter roomAdapter = new RoomAdapter(this);
+        gridView.setAdapter(roomAdapter);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent (MainActivity.this, DeviceListActivity.class);
+                intent.putExtra(ROOM_NAME_KEY, ((RoomObject)roomAdapter.getItem(position)).getRoomName());
+                startActivity(intent);
                 // debug stub toast for now
                 Toast.makeText(MainActivity.this, "" + position, Toast.LENGTH_SHORT).show();
             }
