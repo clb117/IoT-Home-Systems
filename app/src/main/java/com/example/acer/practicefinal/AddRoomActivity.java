@@ -32,6 +32,9 @@ import java.io.FileOutputStream;
  */
 public class AddRoomActivity extends FragmentActivity {
 
+    private static final int REQUEST_ADD_ROOM = 0;
+    private static final int REQUEST_EDIT_ROOM = 1;
+
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final String TAG = "AddRoomActivity";
     private EditText mRoomNameEditText;
