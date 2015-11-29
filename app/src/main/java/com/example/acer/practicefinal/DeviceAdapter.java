@@ -87,7 +87,7 @@ public class DeviceAdapter extends BaseAdapter{
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         indicateSwitchValueChangedToExternalDevice(deviceInfo, isChecked);
-                        Toast.makeText(mContext, name.getText().toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, name.getText().toString()+" " + (isChecked? "ON":"OFF"), Toast.LENGTH_SHORT).show();
                     }
                 });
             }
