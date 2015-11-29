@@ -1,7 +1,6 @@
 package com.example.acer.practicefinal;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,18 +20,13 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setupGridView();
+    }
 
-        // TODO go through the R.string.directory and add to the grid
-        GridView gridView = (GridView) findViewById(R.id.grid_view);
-        gridView.setAdapter(new RoomAdapter(this));
-
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // debug stub toast for now
-                Toast.makeText(MainActivity.this, "" + position, Toast.LENGTH_SHORT).show();
-            }
-        });
+    @Override
+    protected void onRestart(){
+        super.onRestart();
+        setupGridView();
     }
 
     @Override
@@ -66,5 +60,18 @@ public class MainActivity extends Activity {
             default:
                 Log.wtf(TAG, "undefined request returned");
         }
+    }
+
+    private void setupGridView() {
+        GridView gridView = (GridView) findViewById(R.id.grid_view);
+        gridView.setAdapter(new RoomAdapter(this));
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // debug stub toast for now
+                Toast.makeText(MainActivity.this, "" + position, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
