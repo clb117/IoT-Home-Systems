@@ -105,6 +105,12 @@ public class RoomAdapter extends BaseAdapter {
                     roomMap.put(room.getRoomName(), room);
                     return true;
                 }
+                return false;
+            }
+        });
+        folder.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String filename) {
                 if (filename.toLowerCase().endsWith(".png")){
                     Log.d(TAG, String.format("File name of the png is %s", filename));
                     String roomName;
