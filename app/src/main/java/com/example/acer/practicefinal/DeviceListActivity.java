@@ -9,12 +9,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 public class DeviceListActivity extends ListActivity {
     private static final String TAG = "DeviceListActivity";
     private static final int REQUEST_EDIT_ROOM = 1;
 
-    private ListAdapter listAdapter;
+    private DeviceAdapter listAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +40,6 @@ public class DeviceListActivity extends ListActivity {
 
     /**
      * do we even need this?
-     * TODO update sensor data from here
      * @param l
      * @param v
      * @param position
@@ -46,6 +48,9 @@ public class DeviceListActivity extends ListActivity {
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id){
 
+        TextView value = (TextView)v.findViewById(R.id.item_device_sensor_value);
+        String[] deviceInfo = (String[])listAdapter.getItem(position);
+        value.setText(listAdapter.getSensorValueFromExternalDevice(deviceInfo)); // + " updated value");
     }
 
     /**
@@ -69,9 +74,9 @@ public class DeviceListActivity extends ListActivity {
         int id = item.getItemId();
         if (id == R.id.content_add) {
             // launch the add room activity
-            Intent intent = new Intent(this, AddRoomActivity.class);
-            startActivityForResult(intent, REQUEST_EDIT_ROOM);
-            return true;
+//            Intent intent = new Intent(this, AddRoomActivity.class);
+//            startActivityForResult(intent, REQUEST_EDIT_ROOM);
+//            return true;
         }
         return super.onOptionsItemSelected(item);
     }

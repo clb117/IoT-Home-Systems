@@ -139,8 +139,8 @@ public class DeviceAdapter extends BaseAdapter{
      * @param deviceInfo
      * @return
      */
-    private String getSensorValueFromExternalDevice(String[] deviceInfo){
-        return "stub sensor value";
+    public String getSensorValueFromExternalDevice(String[] deviceInfo){
+        return "3.14";
     }
 
     /**
