@@ -66,7 +66,8 @@ public class DeviceAdapter extends BaseAdapter{
             Log.wtf(TAG, "Illegal amount of device info");
             return null;
         }
-        if (convertView != null){
+        if (convertView == null){
+            Log.d(TAG, String.format("Device type is [%s]", deviceInfo[1]));
             if (isASensor(deviceInfo)){
                 convertView = LayoutInflater.from(mContext).inflate(R.layout.item_device_sensor, parent);
                 TextView name = (TextView)convertView.findViewById(R.id.item_device_sensor_name);

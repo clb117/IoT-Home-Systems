@@ -78,7 +78,7 @@ public class RoomAdapter extends BaseAdapter {
             }
         }
         else{
-            return (View)convertView;
+            return convertView;
         }
     }
 
