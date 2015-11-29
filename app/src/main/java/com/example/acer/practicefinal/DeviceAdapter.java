@@ -61,8 +61,8 @@ public class DeviceAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final String[] deviceInfo = rows.get(position);
-        final int deviceInfoLength = 3;
-        if (deviceInfo.length < deviceInfoLength){
+        final int deviceInfoLength = 2;
+        if (deviceInfo.length <= deviceInfoLength){
             Log.wtf(TAG, "Illegal amount of device info");
             return null;
         }
