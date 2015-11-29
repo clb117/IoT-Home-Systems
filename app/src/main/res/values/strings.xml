@@ -14,7 +14,7 @@
     <string name="sensor_reading">Button to Refresh Sensor Reading</string>
     <string name="sensor_value">Current Sensor Value</string>
 
-    <!-- Add room activity related views-->
+    <!-- Add room activity related strings-->
     <string name="title_activity_add_room">AddRoomActivity</string>
     <string name="add_room_take_photo">Take Photo of the room</string>
     <string name="add_room_name_hint">Room Name</string>
@@ -23,7 +23,7 @@
 
     <string name="directory">/DCIM/IoTHomeSystems</string>
 
-    <!-- Add sensor fragment related views-->
+    <!-- Add sensor fragment related strings-->
     <string name="add_sensor_controller_number_hint">Controller Number</string>
     <string name="add_sensor_device_name_hint">Device Name</string>
     <string name="add_sensor_port_hint">Port</string>
@@ -31,7 +31,6 @@
     <string name="add_sensor_sensor_selected">Sensor</string>
     <string name="add_sensor_switch_selected">Switch</string>
 
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- DeviceList related strings-->
+    <string name="item_device_switch_hint">left for off, right for on</string>
 </resources>
