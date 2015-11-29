@@ -37,6 +37,7 @@ public class DeviceListActivity extends ListActivity {
 
     /**
      * do we even need this?
+     * TODO update sensor data from here
      * @param l
      * @param v
      * @param position

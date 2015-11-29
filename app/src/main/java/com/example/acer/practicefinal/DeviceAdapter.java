@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.opencsv.CSVReader;
 
@@ -73,17 +74,20 @@ public class DeviceAdapter extends BaseAdapter{
                 TextView name = (TextView)convertView.findViewById(R.id.item_device_sensor_name);
                 TextView value = (TextView)convertView.findViewById(R.id.item_device_sensor_value);
                 name.setText(deviceInfo[0]);
+                // Communication with device here
                 value.setText(getSensorValueFromExternalDevice(deviceInfo));
             }
             else if (isASwitch(deviceInfo)){
                 convertView = LayoutInflater.from(mContext).inflate(R.layout.item_device_switch, null);
-                TextView name = (TextView)convertView.findViewById(R.id.item_device_switch_name);
+                final TextView name = (TextView)convertView.findViewById(R.id.item_device_switch_name);
                 Switch value = (Switch)convertView.findViewById(R.id.item_device_switch_value);
                 name.setText(deviceInfo[0]);
+                // Communication with device here
                 value.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         indicateSwitchValueChangedToExternalDevice(deviceInfo, isChecked);
+                        Toast.makeText(mContext, name.getText().toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
             }
