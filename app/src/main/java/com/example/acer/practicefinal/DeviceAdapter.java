@@ -54,6 +54,8 @@ public class DeviceAdapter extends BaseAdapter{
      * Assuming the csv is formatted such that
      * [0] contains the name of the device
      * [1] contains whether it is a sensor or switch
+     * [2] contains the URL of the device
+     * [3] contains the key of the device
      * @param position
      * @param convertView
      * @param parent
@@ -62,7 +64,7 @@ public class DeviceAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final String[] deviceInfo = rows.get(position);
-        final int deviceInfoLength = 2;
+        final int deviceInfoLength = 4;
         if (deviceInfo.length < deviceInfoLength){
             Log.wtf(TAG, "Illegal amount of device info");
             return null;
