@@ -19,6 +19,7 @@ public class DeviceListActivity extends ListActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null){
             roomName = extras.getString(MainActivity.ROOM_NAME_KEY);
+            Log.d(TAG, String.format("room name was passed through the intent and it is [%s]", roomName));
         }
         else {
             Log.wtf(TAG, "room name was not passed through the intent");
