@@ -29,8 +29,11 @@ public class DeviceAdapter extends BaseAdapter{
     private static final String TAG = "DeviceAdapter";
 
     private Context mContext;
-    private List<String[]> roomList;
+    private List<String[]> roomList, initValues;
     private String Room;
+    private final String switchStateON = "{\"in\":false}";
+    private final String switchStateOFF = "{\"in\":true}";
+
     //TK AB CB Assuming that a room is a List<String[]>, each room may contain a number of controllers (List of)
     // and String[] contains information for each device attached to that controller.
 
@@ -41,7 +44,9 @@ public class DeviceAdapter extends BaseAdapter{
 
         //open the room csv file
         //roomList = openCSV(room);
+        initValues = GetInitValue();
         roomList = openCSVfromREST(room);
+
         //
     }
 
@@ -74,6 +79,7 @@ public class DeviceAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final String[] deviceInfo = roomList.get(position); //AB get the current controller
+        final String[] deviceValue = initValues.get(position);
         final int deviceInfoLength = 2; //Name Type Pair
         if (deviceInfo.length < deviceInfoLength){
             Log.wtf(TAG, "Illegal amount of device info");
@@ -95,14 +101,19 @@ public class DeviceAdapter extends BaseAdapter{
                 Switch value = (Switch)convertView.findViewById(R.id.item_device_switch_value);
                 name.setText(deviceInfo[0]);
                 // Communication with device here
+                //value.setChecked()
                 value.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        String res = SetSwitch(deviceInfo[0],isChecked);
+                        //AB There will be some delay here... (REST)
                         indicateSwitchValueChangedToExternalDevice(deviceInfo, isChecked);
-                        Toast.makeText(mContext, name.getText().toString() + " " + (isChecked ? "ON" : "OFF"), Toast.LENGTH_SHORT).show();
+                        String success = name.getText().toString() + " Was toggled " + (isChecked ? "ON" : "OFF");
+                        String toaster = (res.equals("{}") ? success : res+" There was a problem..." );
+                        Toast.makeText(mContext, toaster, Toast.LENGTH_SHORT).show();
                     }
                 });
-                //value.setChecked();
+                value.setChecked((deviceValue[1].equals("1") ? true:false));
             }
             else{
                 Log.wtf(TAG, String.format("Illegal device type (%s) stated", deviceInfo[0]));
@@ -192,7 +203,92 @@ public class DeviceAdapter extends BaseAdapter{
         });
         thread.start();
         while (result[0] == null);
-        return result[0].substring(result[0].indexOf(':')+1, result[0].length()-1);
+        return result[0].substring(result[0].indexOf(':') + 1, result[0].length() - 1);
+    }
+
+    private String SetSwitch(String sw, boolean isChecked) {
+        String devicesURL = openCSV(Room).get(1)[0]; //AB The Devices url is in the second row in the CSV file.
+        //sensor = sensor.replaceAll(" ", "%20"); //AB UTF-8 Encoding (Although it is not working with Thinger.io)
+        String switchURL = devicesURL.replaceAll("deviceList",sw); // AB to specify which sensor...
+        String state = (isChecked ? switchStateON : switchStateOFF);
+        final RestClient client = new RestClient(switchURL);
+        final String[] result = new String[1];
+        client.setJSONString(state);
+
+        Thread thread = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                try {
+                    client.execute(RequestMethod.POST);
+                    if (client.getResponseCode() != 200) {
+                        //return server error
+                        result[0] = client.getErrorMessage();
+                        return;
+                    }
+                    //return valid data
+                    JSONObject jObj = new JSONObject(client.getResponse());
+                    //result = new String[1];
+                    result[0] = jObj.toString();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    result[0] = e.toString();
+                }
+            }
+        });
+        thread.start();
+        while (result[0] == null);
+        return result[0];
+    }
+
+    public List<String[]> GetInitValue() {
+
+        String devicesURL = openCSV(Room).get(1)[0]; //AB The Devices url is in the second row in the CSV file.
+        //sensor = sensor.replaceAll(" ", "%20"); //AB UTF-8 Encoding (Although it is not working with Thinger.io)
+        String sensorURL = devicesURL.replaceAll("deviceList","checkall"); // AB to specify which sensor...
+        ArrayList<String[]> initialValues = new ArrayList<String[]>();
+
+        final RestClient client = new RestClient(sensorURL);
+        final String[] result = new String[1];
+        Thread thread = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                try {
+                    client.execute(RequestMethod.GET);
+                    if (client.getResponseCode() != 200) {
+                        //return server error
+                        result[0] = client.getErrorMessage();
+                        return;
+                    }
+                    //return valid data
+                    JSONObject jObj = new JSONObject(client.getResponse());
+                    //result = new String[1];
+                    result[0] = jObj.toString();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    result[0] = e.toString();
+                }
+            }
+        });
+        thread.start();
+        while (result[0] == null);
+        // AB output format {"out":{"Switch1":0,"Switch2":0,"Switch3":0,"Buzzer":0,"LightSensor":3}}
+        result[0] = result[0].replaceAll("\"", ""); //Remove all quotes
+        // result now {out:{Switch1:0,Switch2:0,Switch3:0,Buzzer:0,LightSensor:3}}
+        result[0] =  result[0].substring(result[0].indexOf(":") + 2, result[0].length() - 2); //AB +2 is for :{ and -2 is for }}
+        String[] nametypeArray = result[0].split(","); //AB name:value array elements
+        for (int i = 0; i< nametypeArray.length; i++) {
+            nametypeArray[i] = nametypeArray[i].replace("\\", ""); //Just in case
+        }
+        List<String> temp = Arrays.asList(nametypeArray);
+        System.out.println(Arrays.toString(nametypeArray)); //Debug
+        // AB by now, temp has a list of "name:value", so we have to separate by :
+        for (String nametype : temp) {
+            initialValues.add(nametype.split(":"));
+        }
+        for (String[] nametypepair : initialValues)
+            System.out.println(Arrays.toString(nametypepair));
+        // AB now we have devices in the list formatted as "Name", "Type"
+        return initialValues;
     }
 
     /**
