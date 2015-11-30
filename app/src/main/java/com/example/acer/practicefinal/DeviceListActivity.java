@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.util.Arrays;
+
 public class DeviceListActivity extends ListActivity {
     private static final String TAG = "DeviceListActivity";
     private static final int REQUEST_EDIT_ROOM = 1;
@@ -50,7 +52,8 @@ public class DeviceListActivity extends ListActivity {
 
         TextView value = (TextView)v.findViewById(R.id.item_device_sensor_value);
         String[] deviceInfo = (String[])listAdapter.getItem(position);
-        value.setText(listAdapter.getSensorValueFromExternalDevice(deviceInfo)); // + " updated value");
+        System.out.println(Arrays.toString(deviceInfo));
+        value.setText(listAdapter.GetSensor(deviceInfo[0])); // + " updated value");
     }
 
     /**

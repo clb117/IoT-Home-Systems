@@ -17,9 +17,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions{
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+    }
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.opencsv:opencsv:3.6'
+    compile files('httpclient-4.0.jar')
+    compile files('org.apache.servicemix.bundles.httpcore-4.0-alpha6_1.jar')
 }

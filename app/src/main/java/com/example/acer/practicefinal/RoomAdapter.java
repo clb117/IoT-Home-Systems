@@ -101,7 +101,7 @@ public class RoomAdapter extends BaseAdapter {
             public boolean accept(File dir, String filename) {
                 if (filename.toLowerCase().endsWith(".csv")){
                     Log.d(TAG, String.format("File name of the csv is %s", filename));
-                    RoomObject room = new RoomObject(new File(filename));
+                    RoomObject room = new RoomObject(new File(dir.getAbsolutePath()+File.separator+filename), mContext);
                     roomMap.put(room.getRoomName(), room);
                     return true;
                 }

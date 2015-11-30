@@ -14,10 +14,14 @@ import android.widget.Toast;
 
 import com.opencsv.CSVReader;
 
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class DeviceAdapter extends BaseAdapter{
@@ -25,24 +29,30 @@ public class DeviceAdapter extends BaseAdapter{
     private static final String TAG = "DeviceAdapter";
 
     private Context mContext;
-    private List<String[]> rows;
+    private List<String[]> roomList;
+    private String Room;
+    //TK AB CB Assuming that a room is a List<String[]>, each room may contain a number of controllers (List of)
+    // and String[] contains information for each device attached to that controller.
 
 
     public DeviceAdapter(Context context, String room){
         this.mContext = context;
+        this.Room = room;
 
         //open the room csv file
-        rows = openCSV(room);
+        //roomList = openCSV(room);
+        roomList = openCSVfromREST(room);
+        //
     }
 
     @Override
     public int getCount() {
-        return rows.size();
+        return roomList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return rows.get(position);
+        return roomList.get(position);
     }
 
     @Override
@@ -63,8 +73,8 @@ public class DeviceAdapter extends BaseAdapter{
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final String[] deviceInfo = rows.get(position);
-        final int deviceInfoLength = 4;
+        final String[] deviceInfo = roomList.get(position); //AB get the current controller
+        final int deviceInfoLength = 2; //Name Type Pair
         if (deviceInfo.length < deviceInfoLength){
             Log.wtf(TAG, "Illegal amount of device info");
             return null;
@@ -77,7 +87,7 @@ public class DeviceAdapter extends BaseAdapter{
                 TextView value = (TextView)convertView.findViewById(R.id.item_device_sensor_value);
                 name.setText(deviceInfo[0]);
                 // Communication with device here
-                value.setText(getSensorValueFromExternalDevice(deviceInfo));
+                value.setText(GetSensor(deviceInfo[0]));
             }
             else if (isASwitch(deviceInfo)){
                 convertView = LayoutInflater.from(mContext).inflate(R.layout.item_device_switch, null);
@@ -89,9 +99,10 @@ public class DeviceAdapter extends BaseAdapter{
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         indicateSwitchValueChangedToExternalDevice(deviceInfo, isChecked);
-                        Toast.makeText(mContext, name.getText().toString()+" " + (isChecked? "ON":"OFF"), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, name.getText().toString() + " " + (isChecked ? "ON" : "OFF"), Toast.LENGTH_SHORT).show();
                     }
                 });
+                //value.setChecked();
             }
             else{
                 Log.wtf(TAG, String.format("Illegal device type (%s) stated", deviceInfo[0]));
@@ -110,17 +121,27 @@ public class DeviceAdapter extends BaseAdapter{
     private List<String[]> openCSV(String room){
         final File folder = new File (Environment.getExternalStorageDirectory().toString() + mContext.getString(R.string.directory));
         File csvFile = new File(folder,room+".csv");
-        List<String[]> list = null;
+        List<String[]> urls = null;
         try {
             CSVReader csvReader = new CSVReader(new FileReader(csvFile));
-            list = csvReader.readAll();
+            urls = csvReader.readAll();
             csvReader.close();
         } catch (FileNotFoundException e) {
             Log.wtf(TAG, String.format("csv file: %s.csv was not found", room), e);
         } catch (IOException e) {
             Log.wtf(TAG, String.format("failed to read from the csv file: %s.csv", room,e));
         }
-        return list;
+        return urls;
+    }
+
+    // AB This function is to get the URL from the CSV and get Device info from the controller (REST)
+    private List<String[]> openCSVfromREST(String room){
+        List<String[]> urls = openCSV(room);
+        List<String[]> devices = null;
+        String devicesURL = urls.get(1)[0]; //AB The Devices url is in the second row in the CSV file.
+        devices = GetDeviceList(devicesURL);
+        // AB There will be some delay here... (REST)
+        return devices;
     }
 
     /**
@@ -129,20 +150,49 @@ public class DeviceAdapter extends BaseAdapter{
      * @return
      */
     private boolean isASensor(String[] deviceInfo){
-        return deviceInfo[1].equals("Sensor");
+        return deviceInfo[1].equals("sensor");
     }
 
     private boolean isASwitch(String[] deviceInfo){
-        return deviceInfo[1].equals("Switch");
+        return deviceInfo[1].equals("switch");
     }
 
     /**
      * * TODO retrieve sensor value from device
-     * @param deviceInfo
+     * @param sensor
      * @return
      */
-    public String getSensorValueFromExternalDevice(String[] deviceInfo){
-        return "3.14";
+    public String GetSensor(String sensor) {
+
+        String devicesURL = openCSV(Room).get(1)[0]; //AB The Devices url is in the second row in the CSV file.
+        //sensor = sensor.replaceAll(" ", "%20"); //AB UTF-8 Encoding (Although it is not working with Thinger.io)
+        String sensorURL = devicesURL.replaceAll("deviceList",sensor); // AB to specify which sensor...
+
+        final RestClient client = new RestClient(sensorURL);
+        final String[] result = new String[1];
+        Thread thread = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                try {
+                    client.execute(RequestMethod.GET);
+                    if (client.getResponseCode() != 200) {
+                        //return server error
+                        result[0] = client.getErrorMessage();
+                        return;
+                    }
+                    //return valid data
+                    JSONObject jObj = new JSONObject(client.getResponse());
+                    //result = new String[1];
+                    result[0] = jObj.toString();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    result[0] = e.toString();
+                }
+            }
+        });
+        thread.start();
+        while (result[0] == null);
+        return result[0].substring(result[0].indexOf(':')+1, result[0].length()-1);
     }
 
     /**
@@ -151,5 +201,56 @@ public class DeviceAdapter extends BaseAdapter{
      */
     private void indicateSwitchValueChangedToExternalDevice(String[] deviceInfo, boolean isChecked){
         Log.d(TAG, "switch value was changed to " + isChecked);
+    }
+
+    // Reply example format {"out":{"switch1":0,"switch2":0,"switch3":0,"switch4":0,"light":1024}}
+    private String[] CheckDevice(String checkUrl) {
+        String[] formatedCheck = new String[getCount()];
+        return formatedCheck;
+    }
+
+    private List<String[]> GetDeviceList(String url) {
+        final RestClient client = new RestClient(url);
+        final String[] result = new String[1];
+        ArrayList<String[]> devices = new ArrayList<String[]>();
+        Thread thread = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                try {
+                    client.execute(RequestMethod.GET);
+                    if (client.getResponseCode() != 200) {
+                        //return server error
+                        result[0] = client.getErrorMessage();
+                        return;
+                    }
+                    //return valid data
+                    JSONObject jObj = new JSONObject(client.getResponse());
+                    //result = new String[1];
+                    result[0] = jObj.toString();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    result[0] = e.toString();
+                }
+            }
+        });
+        thread.start();
+        while (result[0] == null);
+        //AB output format {"out":"Switch 1:switch/Switch 2:switch/Switch 3:switch/Buzzer:switch/Light Sensor:sensor"}
+        result[0] =  result[0].substring(result[0].indexOf(":") + 2, result[0].length() - 2); //AB +2 is for :" and -2 is for "}
+        String[] nametypeArray = result[0].split("/");
+        for (int i = 0; i< nametypeArray.length; i++) {
+            nametypeArray[i] = nametypeArray[i].replace("\\", "");
+        }
+        List<String> temp = Arrays.asList(nametypeArray);
+        System.out.println(Arrays.toString(nametypeArray));
+        // AB by now, temp has a list of "name:type", so we have to separate by :
+        for (String nametype : temp) {
+            devices.add(nametype.split(":"));
+        }
+        for (String[] nametypepair : devices)
+                System.out.println(Arrays.toString(nametypepair));
+        // AB now we have devices in the list formatted as "Name", "Type"
+        return devices;
+        //AB returning My Living Room
     }
 }
