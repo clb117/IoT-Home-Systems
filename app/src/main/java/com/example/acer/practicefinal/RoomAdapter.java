@@ -55,6 +55,9 @@ public class RoomAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         RoomObject room = roomObjects[position];
+        int width = mContext.getResources().getDisplayMetrics().widthPixels;
+        int height = mContext.getResources().getDisplayMetrics().heightPixels;
+        //int width = parent.getWidth();
         if (convertView == null){
             // room has image, make the view an imageview
             if (room.hasImage()){
@@ -63,7 +66,7 @@ public class RoomAdapter extends BaseAdapter {
                 imageView.setImageBitmap(room.getImage());
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 imageView.setPadding(8, 8, 8, 8);
-                imageView.setLayoutParams(new GridView.LayoutParams(512, 512));
+                imageView.setLayoutParams(new GridView.LayoutParams(width/2, width/2));
                 return imageView;
             }
             else{
@@ -73,10 +76,12 @@ public class RoomAdapter extends BaseAdapter {
                 textView.setText(room.getRoomName());
                 textView.setPadding(8, 8, 8, 8);
                 textView.setGravity(Gravity.CENTER_HORIZONTAL);
-                textView.setLayoutParams(new GridView.LayoutParams(512, 512));
-                textView.setTextSize(24);
-                textView.setBackgroundColor(Color.BLACK);
-                textView.setTextColor(Color.WHITE);
+                textView.setLayoutParams(new GridView.LayoutParams(width/2, width/2));
+                textView.setTextSize(17);
+                textView.setLines(2);
+                textView.setBackgroundResource(R.mipmap.living_512);
+                textView.setTextColor(Color.BLACK);
+                textView.invalidate();
                 //textView.setLayoutParams(new GridView.LayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)));
                 return textView;
             }
