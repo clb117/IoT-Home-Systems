@@ -1,6 +1,7 @@
 package com.example.acer.practicefinal;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Environment;
 import android.util.Log;
 import android.view.Gravity;
@@ -62,7 +63,7 @@ public class RoomAdapter extends BaseAdapter {
                 imageView.setImageBitmap(room.getImage());
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 imageView.setPadding(8, 8, 8, 8);
-                imageView.setLayoutParams(new GridView.LayoutParams(256, 256));
+                imageView.setLayoutParams(new GridView.LayoutParams(512, 512));
                 return imageView;
             }
             else{
@@ -72,7 +73,8 @@ public class RoomAdapter extends BaseAdapter {
                 textView.setText(room.getRoomName());
                 textView.setPadding(8, 8, 8, 8);
                 textView.setGravity(Gravity.CENTER_HORIZONTAL);
-                textView.setLayoutParams(new GridView.LayoutParams(256, 256));
+                textView.setLayoutParams(new GridView.LayoutParams(512, 512));
+                textView.setTextSize(24);
                 //textView.setLayoutParams(new GridView.LayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)));
                 return textView;
             }
