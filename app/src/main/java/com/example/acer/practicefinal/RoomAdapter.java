@@ -75,6 +75,8 @@ public class RoomAdapter extends BaseAdapter {
                 textView.setGravity(Gravity.CENTER_HORIZONTAL);
                 textView.setLayoutParams(new GridView.LayoutParams(512, 512));
                 textView.setTextSize(24);
+                textView.setBackgroundColor(Color.BLACK);
+                textView.setTextColor(Color.WHITE);
                 //textView.setLayoutParams(new GridView.LayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)));
                 return textView;
             }
