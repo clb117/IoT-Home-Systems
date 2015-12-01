@@ -38,6 +38,8 @@ public class DeviceListActivity extends ListActivity {
 
         listAdapter = new DeviceAdapter(this, roomName);
         setListAdapter(listAdapter);
+        getActionBar().setTitle("We are in -> " +roomName);
+
     }
 
     /**

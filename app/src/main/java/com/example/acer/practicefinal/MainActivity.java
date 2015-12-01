@@ -19,6 +19,7 @@ public class MainActivity extends Activity {
 
     public static final String ROOM_NAME_KEY = "room_name";
     private static final int REQUEST_ADD_ROOM = 0;
+    private String MainText;
 
 
     @Override
@@ -66,6 +67,12 @@ public class MainActivity extends Activity {
             default:
                 Log.wtf(TAG, "undefined request returned");
         }
+    }
+
+    public void setOptionsTitle(String status)
+    {
+        MainText = status;
+
     }
 
     private void setupGridView() {

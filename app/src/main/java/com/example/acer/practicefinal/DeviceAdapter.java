@@ -46,7 +46,6 @@ public class DeviceAdapter extends BaseAdapter{
         //roomList = openCSV(room);
         initValues = GetInitValue();
         roomList = openCSVfromREST(room);
-
         //
     }
 

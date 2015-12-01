@@ -73,13 +73,16 @@ public class RoomAdapter extends BaseAdapter {
                 //room does not have an image, make the view a textview
                 Log.d(TAG, String.format("view at position %d has a text", position));
                 TextView textView = new TextView(mContext);
-                textView.setText(room.getRoomName());
+                String roomName = room.getRoomName();
+                textView.setText(roomName);
                 textView.setPadding(8, 8, 8, 8);
                 textView.setGravity(Gravity.CENTER_HORIZONTAL);
-                textView.setLayoutParams(new GridView.LayoutParams(width/2, width/2));
-                textView.setTextSize(17);
+                textView.setLayoutParams(new GridView.LayoutParams(width / 2-250, width / 2-250));
+                textView.setTextSize(12);
                 textView.setLines(2);
-                textView.setBackgroundResource(R.mipmap.living_512);
+                if (roomName.toLowerCase().contains("bed"))
+                    textView.setBackgroundResource(R.mipmap.bedroom_512);
+                else textView.setBackgroundResource(R.mipmap.living_512);
                 textView.setTextColor(Color.BLACK);
                 textView.invalidate();
                 //textView.setLayoutParams(new GridView.LayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)));
